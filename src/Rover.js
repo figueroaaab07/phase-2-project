@@ -19,17 +19,12 @@ function Rover({ opportunityData, spiritData, curiosityData, manifests, handleDa
           placeholder="YYYY-MM-DD"
           value={date}
           onChange={handleDateChange}
-          /><br></br>
+        /><br></br>
         {isValidDate && (cameras.map(camera => <input key={camera} id={camera} type="radio" name={camera} value={camera} />))}
-          {/* {
-          <>
-            <input key={camera} id={camera} type="radio" name={camera} value={camera} />
-            <label htmlFor={camera}>{camera}</label>
-          </>}
-          ))}
-
-        <button type="submit">🔍</button>
-      </form> */}
+        {/* (cameras.map(camera => {<><input key={camera} id={camera} type="radio" name={camera} value={camera} /> <label htmlFor={camera}>{camera}</label></>}
+          ))} */}
+        {/* <button type="submit">🔍</button> */}
+      {/* </form> */}
     </>
   );
 }

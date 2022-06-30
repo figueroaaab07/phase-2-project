@@ -6,7 +6,7 @@ import Rovers from "./Rovers";
 import Rover from "./Rover";
 import About from "./About";
 import NoMatch from "./NoMatch";
-import { findAllByAltText } from "@testing-library/react";
+// import { findAllByAltText } from "@testing-library/react";
 
 function App() {
   // const [rovers, setRovers] = useState([
@@ -55,22 +55,34 @@ function App() {
       })
   }, []);
 
-  useEffect(() => {
-    console.log(date);
-    console.log(dateData);
-    console.log(isValidDate);
-  }, [date, dateData, isValidDate]);
+  // useEffect(() => {
+  //   console.log(date);
+  //   console.log(dateData);
+  //   console.log(isValidDate);
+  // }, [date, dateData, isValidDate]);
 
   function handleDateChange(event) {
     const dateInput = event.target.value;
+    let cameras;
     if (dateInput.length === 10) {
       const rover = event.target.parentElement.parentElement.querySelector('h3').innerText.toLowerCase() || "";
       // const dateData = (eval(`${rover}Data`)).filter(rover => rover.earth_date === dateInput);
       setDateData((eval(`${rover}Data`)).filter(rover => rover.earth_date === dateInput));
-      let cameras = dateData[0]?.cameras;
-      if (!(cameras === undefined)) {
-        (cameras.length) ? setIsValidDate(true) : setIsValidDate(false);
-      }
+      setDateData((state) => {
+        cameras = state[0]?.cameras;
+        if (!(cameras === undefined)) {
+          (cameras.length) ? setIsValidDate(true) : setIsValidDate(false);
+        } else {
+          setIsValidDate(false);
+          cameras = [];
+        }      
+        return state;
+      });
+      console.log(cameras);
+      // let cameras = dateData[0]?.cameras;
+      // if (!(cameras === undefined)) {
+      //   (cameras.length) ? setIsValidDate(true) : setIsValidDate(false);
+      // }
       console.log(dateData);
     }
     setDate(dateInput);
