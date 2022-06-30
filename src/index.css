@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.datebar {
+  flex: 1 1 auto;
+  margin: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.datebar input {
+  width: 90%;
+  font-size: 1rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding-left: 0.5rem;
+}
+
+.datebar button {
+  padding: 0 0.25rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
