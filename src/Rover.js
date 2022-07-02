@@ -18,7 +18,7 @@ function Rover({ opportunityData, spiritData, curiosityData, manifests, handleDa
   return (
     <>
       <h3>{roverManifest[0]?.name}</h3>
-      <p>{`Input Date between ${roverManifest[0]?.landing_date} and ${roverManifest[0]?.max_date} in format YYYY-MM-DD`}</p>
+      <p>{`Input Date (YYYY-MM-DD) between ${roverManifest[0]?.landing_date} and ${roverManifest[0]?.max_date}`}</p>
       <input
         type="text"
         id="date"

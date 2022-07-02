@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import Home from "./Home";
 import Rovers from "./Rovers";
 import Rover from "./Rover";
+import Photos from "./Photos";
 import About from "./About";
 import NoMatch from "./NoMatch";
 // import Photo from "./Photo";
@@ -71,6 +72,7 @@ function App() {
     let cameras;
     setCameraSelected("");
     setIsValidDate(false);
+    setPhotos([]);
     if (dateInput.length === 10) {
       const rover = event.target.parentElement.parentElement.querySelector('h3').innerText.toLowerCase() || "";
       setRoverSelected(rover);
@@ -104,6 +106,7 @@ function App() {
   function handleRadioChange(e) {
     setCameraSelected(e.target.value);
     setIsLoading(true);
+    // setPhotos([]);
     console.log(e.target.value);
     console.log(roverSelected);
     console.log(date);
@@ -122,9 +125,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rovers" element={<Rovers opportunityData={opportunityData} spiritData={spiritData} curiosityData={curiosityData} manifests={manifests} handleDateChange={handleDateChange} handleDateSubmit={handleDateSubmit} date={date} setDate={setDate} isValidDate={isValidDate} setIsValidDate={setIsValidDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} isLoading={isLoading} />} >
-          <Route path=":roverId" element={<Rover opportunityData={opportunityData} spiritData={spiritData} curiosityData={curiosityData} manifests={manifests} handleDateChange={handleDateChange} handleDateSubmit={handleDateSubmit} date={date} isValidDate={isValidDate} setIsValidDate={setIsValidDate} setDate={setDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} isLoading={isLoading} />} />
-            {/* <Route path="photos" element={<Photos date={date} roverSelected={roverSelected} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} />} />
-          </Route> */}
+          <Route path=":roverId" element={<Rover opportunityData={opportunityData} spiritData={spiritData} curiosityData={curiosityData} manifests={manifests} handleDateChange={handleDateChange} handleDateSubmit={handleDateSubmit} date={date} isValidDate={isValidDate} setIsValidDate={setIsValidDate} setDate={setDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} isLoading={isLoading} />} >
+            <Route path="photos" element={<Photos date={date} roverSelected={roverSelected} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} />} />
+          </Route>
         </Route>
         <Route path="/about" element={<About />} />
         <Route path="*" element={<NoMatch />} />
