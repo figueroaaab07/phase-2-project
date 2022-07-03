@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Outlet } from "react-router-dom";
 import Camera from "./Camera";
-import Photo from "./Photo";
+import Photos from "./Photos";
 import { v4 as uuid } from "uuid";
 
-function Rover({ opportunityData, spiritData, curiosityData, manifests, handleDateChange, handleDateSubmit, date, setDate, isValidDate, setIsValidDate, dateData, handleRadioChange, cameraSelected, photos, isLoading  }) {
+function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsValidDate, dateData, handleRadioChange, cameraSelected, photos, setPhotos, isLoading }) {
   let params = useParams();
   const location = useLocation();
   const roverManifest = manifests.filter(rover => rover.name.toLowerCase() === params.roverId);
@@ -13,6 +13,8 @@ function Rover({ opportunityData, spiritData, curiosityData, manifests, handleDa
     console.log("Location changed", location);
     setDate("");
     setIsValidDate(false);
+    setPhotos([]);
+    // eslint-disable-next-line
   }, [location]);
   
   return (
@@ -27,7 +29,9 @@ function Rover({ opportunityData, spiritData, curiosityData, manifests, handleDa
         onChange={handleDateChange}
       /><br></br>
       {isValidDate && (cameras.map(camera => <Camera key={uuid()} camera={camera} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} />))}<br></br>
-      {isValidDate && (cameras.length) && !(isLoading) && (photos.photos?.map(photo => <Photo key={photo.id} id={photo.id} src={photo.img_src} />))}<br></br>
+      {isValidDate && (cameras.length) && !(isLoading) && <Photos photos={photos} />}<br></br>
+      {/* {isValidDate && (cameras.length) && !(isLoading) && (photos.photos?.map(photo => <Photo key={photo.id} id={photo.id} src={photo.img_src} />))}<br></br> */}
+      <Outlet />
     </>
   );
 }

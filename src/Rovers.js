@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from 'react-router-dom';
 
-function Rovers({ opportunityData, spiritData, curiosityData, manifests, handleDateChange, handleDateSubmit, date, setDate, isValidDate, setIsValidDate, dateData, handleRadioChange, photos }) {
+function Rovers({ manifests }) {
   let style = ({ isActive }) => ({
     margin: "1rem 1rem",
     fontWeight: isActive ? 'bold' : 'normal',
@@ -19,13 +19,6 @@ function Rovers({ opportunityData, spiritData, curiosityData, manifests, handleD
           <NavLink style={style} key={rover.name} to={rover.name.toLowerCase()}>{rover.name}</NavLink>
         ))}
       </nav>
-      {/* <ul>
-        {manifests.map((rover) => (
-          <li key={rover.name}>
-            <Link to={rover.name.toLowerCase()}>{rover.name}</Link>
-          </li>
-          ))}
-      </ul> */}
       <Outlet />
     </>
   );
