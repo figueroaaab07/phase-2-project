@@ -20,7 +20,7 @@ function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsV
   return (
     <>
       <h3>{roverManifest[0]?.name}</h3>
-      <p>{`Input Date (YYYY-MM-DD) between ${roverManifest[0]?.landing_date} and ${roverManifest[0]?.max_date}`}</p>
+      <h4>{`Input Date (YYYY-MM-DD) between ${roverManifest[0]?.landing_date} and ${roverManifest[0]?.max_date}`}</h4>
       <input
         type="text"
         id="date"
@@ -28,9 +28,14 @@ function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsV
         value={date}
         onChange={handleDateChange}
       /><br></br>
+      {isValidDate && (
+        <>
+          <h4>Select Camera</h4>
+          <h5>Important Note: If the date is invalid, out of range or the Rover did no take photos on that date, no selection will be displayed</h5>
+        </>)}
       {isValidDate && (cameras.map(camera => <Camera key={uuid()} camera={camera} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} />))}<br></br>
-      {isValidDate && (cameras.length) && !(isLoading) && <Photos photos={photos} />}<br></br>
-      {/* {isValidDate && (cameras.length) && !(isLoading) && (photos.photos?.map(photo => <Photo key={photo.id} id={photo.id} src={photo.img_src} />))}<br></br> */}
+
+      {isValidDate && (cameras.length) && !(isLoading) && <Photos photos={photos} />}
       <Outlet />
     </>
   );

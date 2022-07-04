@@ -8,13 +8,9 @@ import About from "./About";
 import NoMatch from "./NoMatch";
 
 function App() {
-  const [curiosityActual, setCuriosityActual] = useState([]);
-  const [cALoading, setCALoading] = useState(true);
   const [manifests, setManifests] = useState([]);
-  const [mLoading, setMLoading] = useState(true);
   // eslint-disable-next-line
   const [curiosityData, setCuriosityData] = useState([]);
-  const [cDLoading, setCDLoading] = useState(true);
   // eslint-disable-next-line
   const [opportunityData, setOpportunityData] = useState([]);
   // eslint-disable-next-line
@@ -27,26 +23,12 @@ function App() {
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function getCuriosityActual() {
-    const response = await fetch(
-      "https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=ousVxXPBdjpMGLhVTASFubjk0WQNgZ8OpKuBMzkg"
-    );
-    const json = await response.json();
-    setCuriosityActual(json);
-    setCALoading(false);
-  }
-
-  useEffect(() => {
-    getCuriosityActual();
-  }, []);
-
   async function getManifests() {
     let response = await fetch(
       "http://localhost:6001/manifests"
     );
     const json = await response.json();
     setManifests(json);
-    setMLoading(false);
   }
 
   useEffect(() => {
@@ -59,7 +41,6 @@ function App() {
     );
     const json = await response.json();
     setCuriosityData(json);
-    setCDLoading(false);
   }
 
   useEffect(() => {
@@ -127,33 +108,6 @@ function App() {
       .then((data) => setPhotos(data))
       .then(setIsLoading(false))
   }
-
-  function updateCuriosity(actual, data, setData, manifests, cALoading, cDLoading, mLoading) {
-    if(cALoading || cDLoading || mLoading) {
-      return <div>Loading...</div>
-    } else {
-      const newDates = actual.photo_manifest.photos.filter(photo => photo.sol > manifests[0].max_sol);
-      console.log(newDates);
-
-      newDates.forEach(newDate => console.log(JSON.stringify(newDate))
-      //   {
-      //   fetch("http://localhost:6001/curiosity", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(newDate),
-      //   })
-      //   .then((r) => r.json())
-      //   .then((newItem) => setData([...data, newItem]));
-      // }
-      )
-      // console.log(`Curiosity Actual: ${actual.photo_manifest.photos}`);
-      // console.log(`Curiosity Data: ${manifests[0].max_sol}`);
-    }
-  }
-
-  updateCuriosity(curiosityActual, curiosityData, setCuriosityData, manifests, cALoading, cDLoading, mLoading);
 
   return (
     <>

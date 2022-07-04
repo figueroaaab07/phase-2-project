@@ -50,15 +50,15 @@ function NavBar() {
       </NavLink>
       <NavLink
         style={style}
-        to="/rovers"
-      >
-        Rovers
-      </NavLink>
-      <NavLink
-        style={style}
         to="/about"
       >
         About
+      </NavLink>
+      <NavLink
+        style={style}
+        to="/rovers"
+      >
+        Rovers
       </NavLink>
     </nav>
   );

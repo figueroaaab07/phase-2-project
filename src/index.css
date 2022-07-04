@@ -65,7 +65,7 @@ h2 {
 
 /* Style the images inside the grid */
 .column img {
-  opacity: 0.8; 
+  opacity: 1; 
   cursor: pointer; 
   vertical-align: middle;
 }
