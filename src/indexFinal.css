@@ -56,28 +56,29 @@ h2 {
   border-radius: 3px;
 }
 
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 4px;
-}
-
-/* Create four equal columns that sits next to each other */
+/* The grid: Four equal columns that floats next to each other */
 .column {
-  flex: 25%;
-  max-width: 25%;
-  padding: 0 4px;
+  float: left;
+  width: 25%;
+  padding: 10px;
 }
 
+/* Style the images inside the grid */
 .column img {
-  margin-top: 8px;
+  opacity: 1; 
+  cursor: pointer; 
   vertical-align: middle;
 }
 
-.column-rover-cameras {
-  flex: 50%;
-  max-width: 50%;
-  padding: 0 4px;
+.column img:hover {
+  opacity: 1;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .row-tab {
@@ -112,26 +113,4 @@ th, td {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-
-@media screen and (max-width: 800px) {
-  .column {
-    flex: 50%;
-    max-width: 50%;
-  }
-}
-
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .column {
-    flex: 100%;
-    max-width: 100%;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .column-rover-cameras {
-    flex: 100%;
-    max-width: 100%;
-  }
 }

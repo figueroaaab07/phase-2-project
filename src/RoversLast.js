@@ -15,11 +15,11 @@ function Rovers({ manifests }) {
           paddingBottom: '1rem',
         }}
       >
-        {manifests.map((rover) => (
-          <NavLink style={style} key={rover.name} to={rover.name.toLowerCase()}>{rover.name}</NavLink>
+        {manifests.map((rover) => (console.log(rover.name)
+          // <NavLink style={style} key={rover.name} to={rover.name.toLowerCase()}>{rover.name}</NavLink>
         ))}
-        <Outlet />
       </nav>
+      <Outlet />
     </>
   );
 }

@@ -2,15 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./NavBar";
 import Home from "./Home";
-import Rovers from "./RoversLast";
+import Rovers from "./Rovers";
 import Rover from "./Rover";
 import About from "./About";
+import Logger from "./Logger";
 import NoMatch from "./NoMatch";
 
 function App() {
+  const [curiosityActual, setCuriosityActual] = useState([]);
+  const [cALoading, setCALoading] = useState(true);
   const [manifests, setManifests] = useState([]);
+  const [mLoading, setMLoading] = useState(true);
   // eslint-disable-next-line
   const [curiosityData, setCuriosityData] = useState([]);
+  const [cDLoading, setCDLoading] = useState(true);
   // eslint-disable-next-line
   const [opportunityData, setOpportunityData] = useState([]);
   // eslint-disable-next-line
@@ -22,13 +27,29 @@ function App() {
   const [roverSelected, setRoverSelected] = useState("");
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line
+  const [log, setLog] = useState([]);
+
+  async function getCuriosityActual() {
+    const response = await fetch(
+      "https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=ousVxXPBdjpMGLhVTASFubjk0WQNgZ8OpKuBMzkg"
+    );
+    const json = await response.json();
+    setCuriosityActual(json);
+    setCALoading(false);
+  }
+
+  useEffect(() => {
+    getCuriosityActual();
+  }, []);
 
   async function getManifests() {
     let response = await fetch(
-      "http://localhost:6001/manifests"
+      "https://backend-project-2-final.herokuapp.com/manifests"
     );
     const json = await response.json();
     setManifests(json);
+    setMLoading(false);
   }
 
   useEffect(() => {
@@ -37,10 +58,11 @@ function App() {
 
   async function getCuriosityData() {
     let response = await fetch(
-      "http://localhost:6001/curiosity"
+      "https://backend-project-2-final.herokuapp.com/curiosity"
     );
     const json = await response.json();
     setCuriosityData(json);
+    setCDLoading(false);
   }
 
   useEffect(() => {
@@ -49,7 +71,7 @@ function App() {
 
   async function getOpportunityData() {
     let response = await fetch(
-      "http://localhost:6001/opportunity"
+      "https://backend-project-2-final.herokuapp.com/opportunity"
     );
     const json = await response.json();
     setOpportunityData(json);
@@ -61,7 +83,7 @@ function App() {
 
   async function getSpiritData() {
     let response = await fetch(
-      "http://localhost:6001/spirit"
+      "https://backend-project-2-final.herokuapp.com/spirit"
     );
     const json = await response.json();
     setSpiritData(json);
@@ -117,8 +139,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/rovers" element={<Rovers manifests={manifests} />} >
-          <Route path=":roverId" element={<Rover manifests={manifests} handleDateChange={handleDateChange} date={date} setDate={setDate} isValidDate={isValidDate} setIsValidDate={setIsValidDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} isLoading={isLoading} />} />
+          <Route path=":roverId" element={<Rover manifests={manifests} handleDateChange={handleDateChange} date={date} setDate={setDate} isValidDate={isValidDate} setIsValidDate={setIsValidDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} isLoading={isLoading} log={log} setLog={setLog} />} />
         </Route>
+        <Route path="/logger" element={<Logger log={log} setLog={setLog} />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </>

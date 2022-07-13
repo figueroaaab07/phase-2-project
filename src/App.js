@@ -5,16 +5,23 @@ import Home from "./Home";
 import Rovers from "./Rovers";
 import Rover from "./Rover";
 import About from "./About";
+import Logger from "./Logger";
 import NoMatch from "./NoMatch";
 
 function App() {
-  const [curiosityActual, setCuriosityActual] = useState([]);
-  const [cALoading, setCALoading] = useState(true);
+  // const [curiosityActual, setCuriosityActual] = useState([]);
+  // const [cALoading, setCALoading] = useState(true);
+  // const [perseveranceActual, setPerseveranceActual] = useState([]);
+  // const [pALoading, setPALoading] = useState(true);
+
   const [manifests, setManifests] = useState([]);
-  const [mLoading, setMLoading] = useState(true);
+  // const [mLoading, setMLoading] = useState(true);
+  // eslint-disable-next-line
+  const [perseveranceData, setPerseveranceData] = useState([]);
+  // const [pDLoading, setPDLoading] = useState(true);
   // eslint-disable-next-line
   const [curiosityData, setCuriosityData] = useState([]);
-  const [cDLoading, setCDLoading] = useState(true);
+  // const [cDLoading, setCDLoading] = useState(true);
   // eslint-disable-next-line
   const [opportunityData, setOpportunityData] = useState([]);
   // eslint-disable-next-line
@@ -26,49 +33,77 @@ function App() {
   const [roverSelected, setRoverSelected] = useState("");
   const [photos, setPhotos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line
+  const [log, setLog] = useState([]);
 
-  async function getCuriosityActual() {
-    const response = await fetch(
-      "https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=ousVxXPBdjpMGLhVTASFubjk0WQNgZ8OpKuBMzkg"
-    );
-    const json = await response.json();
-    setCuriosityActual(json);
-    setCALoading(false);
-  }
+  // async function getCuriosityActual() {
+  //   const response = await fetch(
+  //     "https://api.nasa.gov/mars-photos/api/v1/manifests/curiosity?api_key=ousVxXPBdjpMGLhVTASFubjk0WQNgZ8OpKuBMzkg"
+  //   );
+  //   const json = await response.json();
+  //   setCuriosityActual(json);
+  //   setCALoading(false);
+  // }
 
-  useEffect(() => {
-    getCuriosityActual();
-  }, []);
+  // useEffect(() => {
+  //   getCuriosityActual();
+  // }, []);
+
+  // async function getPerseveranceActual() {
+  //   const response = await fetch(
+  //     "https://api.nasa.gov/mars-photos/api/v1/manifests/perseverance?api_key=ousVxXPBdjpMGLhVTASFubjk0WQNgZ8OpKuBMzkg"
+  //   );
+  //   const json = await response.json();
+  //   setPerseveranceActual(json);
+  //   setPALoading(false);
+  // }
+
+  // useEffect(() => {
+  //   getPerseveranceActual();
+  // }, []);
 
   async function getManifests() {
     let response = await fetch(
-      "http://localhost:6001/manifests"
+      "http://localhost:4001/manifests"
     );
     const json = await response.json();
     setManifests(json);
-    setMLoading(false);
+    // setMLoading(false);
   }
 
   useEffect(() => {
     getManifests();
   }, []);
 
+  async function getPerseveranceData() {
+    let response = await fetch(
+      "http://localhost:4001/perseverance"
+    );
+    const json = await response.json();
+    setPerseveranceData(json);
+    // setPDLoading(false);
+  }
+
+  useEffect(() => {
+    getPerseveranceData();
+  }, []);
+
   async function getCuriosityData() {
     let response = await fetch(
-      "http://localhost:6001/curiosity"
+      "http://localhost:4001/curiosity"
     );
     const json = await response.json();
     setCuriosityData(json);
-    setCDLoading(false);
+    // setCDLoading(false);
   }
 
   useEffect(() => {
     getCuriosityData();
   }, []);
-
+  
   async function getOpportunityData() {
     let response = await fetch(
-      "http://localhost:6001/opportunity"
+      "http://localhost:4001/opportunity"
     );
     const json = await response.json();
     setOpportunityData(json);
@@ -80,7 +115,7 @@ function App() {
 
   async function getSpiritData() {
     let response = await fetch(
-      "http://localhost:6001/spirit"
+      "http://localhost:4001/spirit"
     );
     const json = await response.json();
     setSpiritData(json);
@@ -90,6 +125,17 @@ function App() {
     getSpiritData();
   }, []);
 
+  async function getLogs() {
+    let response = await fetch(
+      "http://localhost:4001/log"
+    );
+    const json = await response.json();
+    setLog(json);
+  }
+
+  useEffect(() => {
+    getLogs();
+  }, [isValidDate]);
 
   function handleDateChange(event) {
     const dateInput = event.target.value;
@@ -99,17 +145,20 @@ function App() {
     setPhotos([]);
     if (dateInput.length === 10) {
       const rover = event.target.parentElement.parentElement.querySelector('h3').innerText.toLowerCase() || "";
+      console.log(rover);
       setRoverSelected(rover);
       // eslint-disable-next-line
       setDateData((eval(`${rover}Data`)).filter(rover => rover.earth_date === dateInput));
       setDateData((state) => {
         cameras = state[0]?.cameras;
+        console.log(state);
         if (!(cameras === undefined)) {
           (cameras.length) ? setIsValidDate(true) : setIsValidDate(false);
         } else {
           setIsValidDate(false);
           cameras = [];
-        }      
+        }
+        console.log("Cameras:", cameras)
         return state;
       });
     }
@@ -128,32 +177,19 @@ function App() {
       .then(setIsLoading(false))
   }
 
-  function updateCuriosity(actual, data, setData, manifests, cALoading, cDLoading, mLoading) {
-    if(cALoading || cDLoading || mLoading) {
-      return <div>Loading...</div>
-    } else {
-      const newDates = actual.photo_manifest.photos.filter(photo => photo.sol > manifests[0].max_sol);
-      console.log(newDates);
+  // function updateRover(actual, data, setData, manifests, aLoading, dLoading, mLoading) {
+  //   if(aLoading || dLoading || mLoading) {
+  //     return <div>Loading...</div>
+  //   } else {
+  //     const newDates = actual.photo_manifest.photos.filter(photo => photo.sol > manifests[0].max_sol);
+  //     console.log(newDates);
 
-      newDates.forEach(newDate => console.log(JSON.stringify(newDate))
-      //   {
-      //   fetch("http://localhost:6001/curiosity", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(newDate),
-      //   })
-      //   .then((r) => r.json())
-      //   .then((newItem) => setData([...data, newItem]));
-      // }
-      )
-      // console.log(`Curiosity Actual: ${actual.photo_manifest.photos}`);
-      // console.log(`Curiosity Data: ${manifests[0].max_sol}`);
-    }
-  }
+  //     newDates.forEach(newDate => console.log(JSON.stringify(newDate)))
+  //   }
+  // }
 
-  updateCuriosity(curiosityActual, curiosityData, setCuriosityData, manifests, cALoading, cDLoading, mLoading);
+  // updateRover(curiosityActual, curiosityData, setCuriosityData, manifests, cALoading, cDLoading, mLoading);
+  // updateRover(perseveranceActual, perseveranceData, setPerseveranceData, manifests, pALoading, pDLoading, mLoading);
 
   return (
     <>
@@ -163,8 +199,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/rovers" element={<Rovers manifests={manifests} />} >
-          <Route path=":roverId" element={<Rover manifests={manifests} handleDateChange={handleDateChange} date={date} setDate={setDate} isValidDate={isValidDate} setIsValidDate={setIsValidDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} isLoading={isLoading} />} />
+          <Route path=":roverId" element={<Rover manifests={manifests} handleDateChange={handleDateChange} date={date} setDate={setDate} isValidDate={isValidDate} setIsValidDate={setIsValidDate} dateData={dateData} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} photos={photos} setPhotos={setPhotos} isLoading={isLoading} log={log} setLog={setLog} />} />
         </Route>
+        <Route path="/logger" element={<Logger log={log} setLog={setLog} />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </>

@@ -6,12 +6,9 @@ import { v4 as uuid } from "uuid";
 
 function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsValidDate, dateData, handleRadioChange, cameraSelected, photos, setPhotos, isLoading, log, setLog }) {
   let params = useParams();
-  // console.log(params);
   const location = useLocation();
   const roverManifest = manifests.filter(rover => rover.name.toLowerCase() === params.roverId);
-  // console.log(roverManifest);
   let cameras = dateData[0]?.cameras;
-  // console.log(cameras);
   useEffect(() => {
     console.log("Location changed", location);
     setDate("");
@@ -36,11 +33,7 @@ function Rover({ manifests, handleDateChange, date, setDate, isValidDate, setIsV
           <h4>Select Camera</h4>
           <h5>Important Note: If the date is invalid, out of range or the Rover did no take photos on that date, no selection will be displayed</h5>
         </>)}
-      {isValidDate && (
-        <div className="row">
-          {cameras.map(camera => <Camera key={uuid()} camera={camera} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} />)}
-        </div>
-      )}<br></br>
+      {isValidDate && (cameras.map(camera => <Camera key={uuid()} camera={camera} handleRadioChange={handleRadioChange} cameraSelected={cameraSelected} />))}<br></br>
 
       {isValidDate && (cameras.length) && !(isLoading) && <Photos photos={photos} log={log} setLog={setLog} />}
       <Outlet />
