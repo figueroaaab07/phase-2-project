@@ -9,11 +9,19 @@ import Logger from "./Logger";
 import NoMatch from "./NoMatch";
 
 function App() {
+  const [curiosityActual, setCuriosityActual] = useState([]);
+  const [cALoading, setCALoading] = useState(true);
+  const [perseveranceActual, setPerseveranceActual] = useState([]);
+  const [pALoading, setPALoading] = useState(true);
+
   const [manifests, setManifests] = useState([]);
+  // const [mLoading, setMLoading] = useState(true);
   // eslint-disable-next-line
   const [perseveranceData, setPerseveranceData] = useState([]);
+  // const [pDLoading, setPDLoading] = useState(true);
   // eslint-disable-next-line
   const [curiosityData, setCuriosityData] = useState([]);
+  // const [cDLoading, setCDLoading] = useState(true);
   // eslint-disable-next-line
   const [opportunityData, setOpportunityData] = useState([]);
   // eslint-disable-next-line
@@ -34,6 +42,7 @@ function App() {
     );
     const json = await response.json();
     setManifests(manifests => manifests.concat(json));
+    // setMLoading(false);
   }
   
   useEffect(() => {
@@ -47,7 +56,11 @@ function App() {
     const json = await response.json();
     const {photos, ...curiosity_manifest} = json.photo_manifest;
     setManifests(manifests => manifests.concat(curiosity_manifest))
+    console.log(curiosity_manifest);
+    console.log(photos);
+    setCuriosityActual(photos);
     setCuriosityData(photos);
+    setCALoading(false);
   }
 
   useEffect(() => {
@@ -61,12 +74,42 @@ function App() {
     const json = await response.json();
     const {photos, ...perseverance_manifest} = json.photo_manifest;
     setManifests(manifests => manifests.concat(perseverance_manifest));
+    console.log(perseverance_manifest);
+    console.log(photos);
+    setPerseveranceActual(photos);
     setPerseveranceData(photos);
- }
+    setPALoading(false);
+  }
 
   useEffect(() => {
     getPerseveranceActual();
   }, []);
+
+  // async function getPerseveranceData() {
+  //   let response = await fetch(
+  //     "http://localhost:4001/perseverance"
+  //   );
+  //   const json = await response.json();
+  //   setPerseveranceData(json);
+  //   // setPDLoading(false);
+  // }
+
+  // useEffect(() => {
+  //   getPerseveranceData();
+  // }, []);
+
+  // async function getCuriosityData() {
+  //   let response = await fetch(
+  //     "http://localhost:4001/curiosity"
+  //   );
+  //   const json = await response.json();
+  //   setCuriosityData(json);
+  //   // setCDLoading(false);
+  // }
+
+  // useEffect(() => {
+  //   getCuriosityData();
+  // }, []);
   
   async function getOpportunityData() {
     let response = await fetch(
@@ -143,6 +186,20 @@ function App() {
       .then((data) => setPhotos(data))
       .then(setIsLoading(false))
   }
+
+  // function updateRover(actual, data, setData, manifests, aLoading, dLoading, mLoading) {
+  //   if(aLoading || dLoading || mLoading) {
+  //     return <div>Loading...</div>
+  //   } else {
+  //     const newDates = actual.photo_manifest.photos.filter(photo => photo.sol > manifests[0].max_sol);
+  //     console.log(newDates);
+
+  //     newDates.forEach(newDate => console.log(JSON.stringify(newDate)))
+  //   }
+  // }
+
+  // updateRover(curiosityActual, curiosityData, setCuriosityData, manifests, cALoading, cDLoading, mLoading);
+  // updateRover(perseveranceActual, perseveranceData, setPerseveranceData, manifests, pALoading, pDLoading, mLoading);
 
   return (
     <>

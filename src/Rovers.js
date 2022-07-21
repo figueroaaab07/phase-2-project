@@ -6,6 +6,7 @@ function Rovers({ manifests }) {
     margin: "1rem 1rem",
     fontWeight: isActive ? 'bold' : 'normal',
   });
+
   return (
     <>
       <h2>Rovers</h2>
