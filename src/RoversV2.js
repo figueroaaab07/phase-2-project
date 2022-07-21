@@ -6,6 +6,7 @@ function Rovers({ manifests }) {
     margin: "1rem 1rem",
     fontWeight: isActive ? 'bold' : 'normal',
   });
+
   return (
     <>
       <h2>Rovers</h2>
@@ -15,11 +16,11 @@ function Rovers({ manifests }) {
           paddingBottom: '1rem',
         }}
       >
-        {manifests.map((rover) => (console.log(rover.name)
-          // <NavLink style={style} key={rover.name} to={rover.name.toLowerCase()}>{rover.name}</NavLink>
+        {manifests.map((rover) => (
+          <NavLink style={style} key={rover.name} to={rover.name.toLowerCase()}>{rover.name}</NavLink>
         ))}
+        <Outlet />
       </nav>
-      <Outlet />
     </>
   );
 }
